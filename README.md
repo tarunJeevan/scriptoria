@@ -1,7 +1,6 @@
-# Tauri + React + Typescript
+# Scriptoria
+A writing tool designed to give users a distraction free writing experience while leveraging the power of AI to provide
+a writing assistant while maintaining security, privacy, and ownership of all of the user's content.
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## Usage
+...
