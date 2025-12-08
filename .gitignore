@@ -11,6 +11,12 @@ node_modules/
 dist/
 dist-ssr
 *.local
+.output
+.vercel
+.netlify
+.wrangler
+.svelte-kit/
+build/
 
 # Editor directories and files
 .vs
@@ -18,6 +24,7 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
@@ -26,6 +33,9 @@ dist-ssr
 
 # Development
 .env
+.env.*
+!.env.example
+!.env.test
 target/
 TODO.md
 .npm/
@@ -33,3 +43,5 @@ TODO.md
 .pnpm/
 package-lock.json
 pnpm-lock.yaml
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
