@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            SELECT COUNT(*) as \"count: i64\"\n            FROM documents\n            WHERE project_id = ?\n                AND deleted = 0\n                AND (entity_type = ? OR (entity_type IS NULL AND ? IS NULL))\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "count: i64",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "b5a42b7dcdc187e3c319e4a67a2e684444a06222ebd5fdd65f4a9acfa3f2f557"
+}
