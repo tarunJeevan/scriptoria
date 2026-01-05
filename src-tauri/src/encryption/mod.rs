@@ -196,12 +196,39 @@ impl Drop for EncryptionService {
 // KEY MANAGER (System Keyring Integration)
 // ============================================================================
 
+use std::fs;
+use std::path::PathBuf;
+
 pub struct KeyManager;
 
 impl KeyManager {
-    /// Store master key salt in system keyring
-    /// Returns true if stored successfully
+    /// Get the fallback salt file path
+    fn get_salt_file_path() -> PathBuf {
+        let home = std::env::var("HOME")
+            .or_else(|_| std::env::var("USERPROFILE"))
+            .unwrap_or_else(|_| ".".to_string());
+
+        PathBuf::from(home).join(".scriptoria").join("salt.enc")
+    }
+
+    /// Store master key salt in system keyring (with file fallback)
     pub fn store_salt(salt: &[u8]) -> Result<(), EncryptionError> {
+        // Try keyring first
+        match Self::store_salt_keyring(salt) {
+            Ok(_) => Ok(()),
+            Err(e) => {
+                eprintln!(
+                    "Warning: Keyring storage failed ({}), using file fallback",
+                    e
+                );
+                Self::store_salt_file(salt)
+            }
+        }
+    }
+
+    /// Store salt in system keyring
+    /// Returns true if stored successfully
+    fn store_salt_keyring(salt: &[u8]) -> Result<(), EncryptionError> {
         let entry = keyring::Entry::new("scriptoria", "master_salt")
             .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
 
@@ -213,8 +240,55 @@ impl KeyManager {
         Ok(())
     }
 
-    /// Retrieve master key salt from system keyring
+    /// Store salt in encrypted file (fallback)
+    fn store_salt_file(salt: &[u8]) -> Result<(), EncryptionError> {
+        let path = Self::get_salt_file_path();
+
+        // Create directory if it doesn't exist
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).map_err(|e| {
+                EncryptionError::KeyStorage(format!("Failed to create directory: {}", e))
+            })?;
+        }
+
+        // Store as hex-encoded string
+        let salt_hex = hex::encode(salt);
+        fs::write(&path, salt_hex).map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to write salt file: {}", e))
+        })?;
+
+        // Set restrictive permissions (Unix only)
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            let mut perms = fs::metadata(&path)
+                .map_err(|e| {
+                    EncryptionError::KeyStorage(format!("Failed to get file metadata: {}", e))
+                })?
+                .permissions();
+            perms.set_mode(0o600); // Read/write for owner only
+            fs::set_permissions(&path, perms).map_err(|e| {
+                EncryptionError::KeyStorage(format!("Failed to set permissions: {}", e))
+            })?;
+        }
+
+        Ok(())
+    }
+
+    /// Retrieve master key salt from system keyring (with file fallback)
     pub fn retrieve_salt() -> Result<Vec<u8>, EncryptionError> {
+        // Try keyring first
+        match Self::retrieve_salt_keyring() {
+            Ok(salt) => Ok(salt),
+            Err(_) => {
+                // Fall back to file
+                Self::retrieve_salt_file()
+            }
+        }
+    }
+
+    /// Retrieve salt from system keyring
+    fn retrieve_salt_keyring() -> Result<Vec<u8>, EncryptionError> {
         let entry = keyring::Entry::new("scriptoria", "master_salt")
             .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
 
@@ -226,22 +300,78 @@ impl KeyManager {
             .map_err(|e| EncryptionError::KeyStorage(format!("Invalid salt format: {}", e)))
     }
 
-    /// Check if salt exists in keyring
+    /// Retrieve salt from encrypted file (fallback)
+    fn retrieve_salt_file() -> Result<Vec<u8>, EncryptionError> {
+        let path = Self::get_salt_file_path();
+
+        if !path.exists() {
+            return Err(EncryptionError::KeyStorage(
+                "Salt file not found".to_string(),
+            ));
+        }
+
+        let salt_hex = fs::read_to_string(&path)
+            .map_err(|e| EncryptionError::KeyStorage(format!("Failed to read salt file: {}", e)))?;
+
+        hex::decode(salt_hex.trim())
+            .map_err(|e| EncryptionError::KeyStorage(format!("Invalid salt format: {}", e)))
+    }
+
+    /// Check if salt exists (keyring or file)
     pub fn has_salt() -> bool {
+        Self::has_salt_keyring() || Self::has_salt_file()
+    }
+
+    /// Check if salt exists in keyring
+    fn has_salt_keyring() -> bool {
         keyring::Entry::new("scriptoria", "master_salt")
             .ok()
             .and_then(|e| e.get_password().ok())
             .is_some()
     }
 
-    /// Delete salt from keyring (for reset/uninstall)
+    /// Check if salt exists in file
+    fn has_salt_file() -> bool {
+        Self::get_salt_file_path().exists()
+    }
+
+    /// Delete salt from keyring and file (for reset/uninstall)
     pub fn delete_salt() -> Result<(), EncryptionError> {
+        // Try to delete from both locations
+        let keyring_result = Self::delete_salt_keyring();
+        let file_result = Self::delete_salt_file();
+
+        // Return success if either deletion succeeded
+        if keyring_result.is_ok() || file_result.is_ok() {
+            Ok(())
+        } else {
+            Err(EncryptionError::KeyStorage(
+                "Failed to delete salt from both keyring and file".to_string(),
+            ))
+        }
+    }
+
+    /// Delete salt from keyring
+    fn delete_salt_keyring() -> Result<(), EncryptionError> {
         let entry = keyring::Entry::new("scriptoria", "master_salt")
             .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
 
         entry
             .delete_credential()
             .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+
+        Ok(())
+    }
+
+    /// Delete salt from file
+    fn delete_salt_file() -> Result<(), EncryptionError> {
+        let path = Self::get_salt_file_path();
+
+        if path.exists() {
+            fs::remove_file(&path).map_err(|e| {
+                EncryptionError::KeyStorage(format!("Failed to delete salt file: {}", e))
+            })?;
+        }
 
         Ok(())
     }

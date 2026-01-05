@@ -11,6 +11,7 @@ use sqlx::SqlitePool;
 // DOCUMENT REPOSITORY
 // ============================================================================
 
+#[derive(Clone)]
 pub struct DocumentRepository {
     pool: SqlitePool,
 }
