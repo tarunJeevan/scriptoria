@@ -2,6 +2,8 @@ pub mod db;
 pub mod encryption;
 pub mod models;
 
+pub use models::*;
+
 use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
