@@ -5,6 +5,7 @@ use scriptoria_lib::db::documents::DocumentRepository;
 use scriptoria_lib::encryption::{EncryptionService, KeyManager, PasswordValidator};
 use scriptoria_lib::models::{CreateDocumentParams, DocumentMetadata, UpdateDocumentParams};
 
+use serial_test::serial;
 use sqlx::SqlitePool;
 use std::fs;
 use std::path::PathBuf;
@@ -524,40 +525,113 @@ async fn test_concurrent_document_operations() {
 
 #[tokio::test]
 #[ignore] // Run manually with: cargo test --test integration_test test_keyring -- --ignored
-async fn test_keyring_salt_storage() {
+#[serial]
+async fn test_keyring_when_available() {
+    // Check if keyring is available on the platform. Skip test if it isn't
+    if !KeyManager::is_keyring_available() {
+        eprintln!("SKIP: Keyring not available on the platform. Test will use file fallback");
+        return;
+    }
+
+    // Clean up any existing salt
+    let _ = KeyManager::delete_salt();
+    // Give the system a moment to process the deletion
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
     // Generate salt
     let salt = gen_salt_with_retry(3);
-
     // Store salt in keyring
     KeyManager::store_salt(&salt).unwrap();
+    // Give the system a moment to persist (Linux Secret Service can be async)
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
 
     // Verify salt exists
-    assert!(KeyManager::has_salt());
-
+    assert!(KeyManager::has_salt(), "Salt should exist after storage");
     // Retrieve salt
     let retrieved_salt = KeyManager::retrieve_salt().unwrap();
-    assert_eq!(salt, retrieved_salt);
+    assert_eq!(salt, retrieved_salt, "Retrieved salt should match original");
 
     // Clean up
     KeyManager::delete_salt().unwrap();
-    assert!(!KeyManager::has_salt());
+    // Verify cleanup
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+    assert!(
+        !KeyManager::has_salt(),
+        "Salt should not exist after deletion"
+    );
 }
 
 #[tokio::test]
 #[ignore]
-async fn test_salt_file_fallback() {
+// Run manually with: cargo test --test integration_test test_file_fallback_when_keyring_unavailable -- --ignored
+#[serial]
+async fn test_file_fallback_when_keyring_unavailable() {
+    // Verifies the file fallback works
+    // Clean up any existing salt
+    let _ = KeyManager::delete_salt();
+    // Give the system a moment to process the deletion
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
     // Generate salt
-    let salt = EncryptionService::generate_salt().unwrap();
+    let salt = gen_salt_with_retry(3);
+
+    // Store with file fallback if keyring unavailable
+    KeyManager::store_salt(&salt).unwrap();
+    // Give the system a moment to persist (Linux Secret Service can be async)
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+    // Verify stored salt
+    assert!(KeyManager::has_salt(), "Salt should exist");
+
+    // Retrieve and verify
+    let retrieved_salt = KeyManager::retrieve_salt().unwrap();
+    assert_eq!(salt, retrieved_salt, "Retrieved salt should match");
+
+    // Verify file exists (on systems without available keyring)
+    if !KeyManager::is_keyring_available() {
+        let salt_path = std::env::var("HOME")
+            .or_else(|_| std::env::var("USERPROFILE"))
+            .map(|h| {
+                std::path::PathBuf::from(h)
+                    .join(".scriptoria")
+                    .join("salt.enc")
+            })
+            .unwrap();
+        assert!(
+            salt_path.exists(),
+            "Salt file should exist when keyring is unavailable"
+        );
+    }
+
+    // Cleanup
+    KeyManager::delete_salt().unwrap();
+    // Give the system a moment to process the deletion
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+    assert!(!KeyManager::has_salt(), "Salt should be deleted");
+}
+
+#[tokio::test]
+#[ignore] // Run manually with: cargo test --test integration_test test_salt_file_fallback -- --ignored
+#[serial]
+async fn test_salt_file_fallback() {
+    // Verifies the file fallback works
+    // Clean up any existing salt
+    let _ = KeyManager::delete_salt();
+    // Give the system a moment to process the deletion
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+    // Generate salt
+    let salt = gen_salt_with_retry(3);
 
     // Store salt (will use file fallback if keyring is unavailable)
     KeyManager::store_salt(&salt).unwrap();
 
     // Verify salt exists
-    assert!(KeyManager::has_salt());
+    assert!(KeyManager::has_salt(), "Salt should exist");
 
     // Retrieve salt
     let retrieved_salt = KeyManager::retrieve_salt().unwrap();
-    assert_eq!(salt, retrieved_salt);
+    assert_eq!(salt, retrieved_salt, "Retrieved salt should match");
 
     // Verify file was created
     let salt_path = std::env::var("HOME")
@@ -569,7 +643,10 @@ async fn test_salt_file_fallback() {
         })
         .unwrap();
 
-    assert!(salt_path.exists());
+    assert!(
+        salt_path.exists(),
+        "Salt file should exist when keyring is unavailable"
+    );
 
     // Verify permissions for Unix
     #[cfg(unix)]
@@ -582,20 +659,29 @@ async fn test_salt_file_fallback() {
 
     // Clean up
     KeyManager::delete_salt().unwrap();
-    assert!(!KeyManager::has_salt());
+    assert!(!KeyManager::has_salt(), "Salt should be deleted");
 }
 
 #[tokio::test]
-#[ignore] // Run manually with: cargo test --test integration_test test_full_auth_flow -- --ignored
+#[ignore] // Run manually with: cargo test --test integration_test test_full_authentication_flow -- --ignored
+#[serial]
 async fn test_full_authentication_flow() {
     let (pool, db_path) = setup_test_db().await;
     let repo = DocumentRepository::new(pool.clone());
+
+    // Clean up any existing salt
+    let _ = KeyManager::delete_salt();
+    // Give the system a moment to process the deletion
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
 
     let password = "User_Password_123!";
 
     // First-time setup: generate and store salt
     let salt = gen_salt_with_retry(3);
     KeyManager::store_salt(&salt).unwrap();
+
+    // Give the system a moment to persist (Linux Secret Service can be async)
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
 
     // Derive master key
     let master_key = EncryptionService::derive_master_key(password, &salt).unwrap();

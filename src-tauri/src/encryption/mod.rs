@@ -70,7 +70,7 @@ impl EncryptionService {
         let mut salt = vec![0u8; 32];
         OsRng
             .try_fill_bytes(&mut salt)
-            .map_err(|e| EncryptionError::Randomness(e.to_string()))?;
+            .map_err(|e| EncryptionError::Randomness(format!("RNG failed: {}", e)))?;
         Ok(salt)
     }
 
@@ -211,9 +211,53 @@ impl KeyManager {
         PathBuf::from(home).join(".scriptoria").join("salt.enc")
     }
 
+    /// Create a keyring entry with consistent parameters
+    fn create_keyring_entry() -> Result<keyring::Entry, keyring::Error> {
+        keyring::Entry::new("scriptoria", "master_salt")
+    }
+
+    /// Check if keyring is available on the platform
+    pub fn is_keyring_available() -> bool {
+        // Try to create test entry
+        match Self::create_keyring_entry() {
+            Ok(entry) => {
+                // Try a simple set/get/delete operation
+                let test_value = "keyring_test_value";
+
+                match entry.set_password(test_value) {
+                    Ok(_) => {
+                        // Immediately try to retrieve it with the same entry
+                        let same_entry_works =
+                            matches!(entry.get_password(), Ok(v) if v == test_value);
+
+                        // Try to retrieve it with a FRESH entry
+                        let fresh_entry_result = Self::create_keyring_entry()
+                            .and_then(|fresh_entry| fresh_entry.get_password());
+
+                        let fresh_entry_works =
+                            matches!(&fresh_entry_result, Ok(v) if v == test_value);
+
+                        // Cleanup
+                        let _ = entry.delete_credential();
+
+                        // Only return true if same AND fresh entry retrieval works
+                        same_entry_works && fresh_entry_works
+                    }
+                    Err(_) => false,
+                }
+            }
+            Err(_) => false,
+        }
+    }
+
     /// Store master key salt in system keyring (with file fallback)
     pub fn store_salt(salt: &[u8]) -> Result<(), EncryptionError> {
-        // Try keyring first
+        // Check if keyring is actually available before trying to use it
+        if !Self::is_keyring_available() {
+            eprintln!("Warning: Keyring not available. Using file fallback immediately.");
+            return Self::store_salt_file(salt);
+        }
+        // Try keyring
         match Self::store_salt_keyring(salt) {
             Ok(_) => Ok(()),
             Err(e) => {
@@ -229,15 +273,34 @@ impl KeyManager {
     /// Store salt in system keyring
     /// Returns true if stored successfully
     fn store_salt_keyring(salt: &[u8]) -> Result<(), EncryptionError> {
-        let entry = keyring::Entry::new("scriptoria", "master_salt")
-            .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+        let entry = Self::create_keyring_entry().map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to create keyring entry: {}", e))
+        })?;
 
         let salt_hex = hex::encode(salt);
         entry
             .set_password(&salt_hex)
             .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
 
-        Ok(())
+        // Immediate verification - create a FRESH entry to simulate cross session access
+        let verify_entry = Self::create_keyring_entry().map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to create verification entry: {}", e))
+        })?;
+
+        match verify_entry.get_password() {
+            Ok(retrieved) => {
+                if retrieved != salt_hex {
+                    return Err(EncryptionError::KeyStorage(
+                        "Stored value doesn't match retrieved value".to_string(),
+                    ));
+                }
+                Ok(())
+            }
+            Err(e) => Err(EncryptionError::KeyStorage(format!(
+                "Stored but immediately retrieval with fresh entry failed: {}",
+                e
+            ))),
+        }
     }
 
     /// Store salt in encrypted file (fallback)
@@ -277,6 +340,12 @@ impl KeyManager {
 
     /// Retrieve master key salt from system keyring (with file fallback)
     pub fn retrieve_salt() -> Result<Vec<u8>, EncryptionError> {
+        // Check if keyring is actually available before trying to use it
+        if !Self::is_keyring_available() {
+            eprintln!("Warning: Keyring not available. Retrieving file fallback immediately.");
+            return Self::retrieve_salt_file();
+        }
+
         // Try keyring first
         match Self::retrieve_salt_keyring() {
             Ok(salt) => Ok(salt),
@@ -289,12 +358,13 @@ impl KeyManager {
 
     /// Retrieve salt from system keyring
     fn retrieve_salt_keyring() -> Result<Vec<u8>, EncryptionError> {
-        let entry = keyring::Entry::new("scriptoria", "master_salt")
-            .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+        let entry = Self::create_keyring_entry().map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to create keyring entry: {}", e))
+        })?;
 
         let salt_hex = entry
             .get_password()
-            .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+            .map_err(|e| EncryptionError::KeyStorage(format!("Failed to get password: {}", e)))?;
 
         hex::decode(salt_hex)
             .map_err(|e| EncryptionError::KeyStorage(format!("Invalid salt format: {}", e)))
@@ -319,20 +389,24 @@ impl KeyManager {
 
     /// Check if salt exists (keyring or file)
     pub fn has_salt() -> bool {
-        Self::has_salt_keyring() || Self::has_salt_file()
+        let has_keyring = Self::has_salt_keyring();
+        let has_file = Self::has_salt_file();
+
+        has_keyring || has_file
     }
 
     /// Check if salt exists in keyring
     fn has_salt_keyring() -> bool {
-        keyring::Entry::new("scriptoria", "master_salt")
-            .ok()
-            .and_then(|e| e.get_password().ok())
-            .is_some()
+        match Self::create_keyring_entry() {
+            Ok(entry) => entry.get_password().is_ok(),
+            Err(_) => false,
+        }
     }
 
     /// Check if salt exists in file
     fn has_salt_file() -> bool {
-        Self::get_salt_file_path().exists()
+        let path = Self::get_salt_file_path();
+        path.exists()
     }
 
     /// Delete salt from keyring and file (for reset/uninstall)
@@ -353,12 +427,13 @@ impl KeyManager {
 
     /// Delete salt from keyring
     fn delete_salt_keyring() -> Result<(), EncryptionError> {
-        let entry = keyring::Entry::new("scriptoria", "master_salt")
-            .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+        let entry = Self::create_keyring_entry().map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to create keyring entry: {}", e))
+        })?;
 
-        entry
-            .delete_credential()
-            .map_err(|e| EncryptionError::KeyStorage(e.to_string()))?;
+        entry.delete_credential().map_err(|e| {
+            EncryptionError::KeyStorage(format!("Failed to delete credential: {}", e))
+        })?;
 
         Ok(())
     }
