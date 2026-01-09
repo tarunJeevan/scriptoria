@@ -15,7 +15,6 @@ dist-ssr
 .vercel
 .netlify
 .wrangler
-.svelte-kit/
 build/
 
 # Editor directories and files
