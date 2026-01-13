@@ -58,6 +58,7 @@ declare module '$env/static/private' {
 	export const PWD: string;
 	export const LOGNAME: string;
 	export const XDG_SESSION_DESKTOP: string;
+	export const TAURI_ENV_PLATFORM: string;
 	export const XDG_SESSION_TYPE: string;
 	export const PNPM_HOME: string;
 	export const SYSTEMD_EXEC_PID: string;
@@ -67,8 +68,8 @@ declare module '$env/static/private' {
 	export const HOME: string;
 	export const SSH_ASKPASS: string;
 	export const LANG: string;
-	export const _JAVA_AWT_WM_NONREPARENTING: string;
 	export const LS_COLORS: string;
+	export const _JAVA_AWT_WM_NONREPARENTING: string;
 	export const XDG_CURRENT_DESKTOP: string;
 	export const npm_package_version: string;
 	export const MEMORY_PRESSURE_WATCH: string;
@@ -84,7 +85,9 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_script: string;
 	export const MOZ_GMP_PATH: string;
 	export const XKB_DEFAULT_LAYOUT: string;
+	export const TAURI_ENV_PLATFORM_VERSION: string;
 	export const XDG_SESSION_CLASS: string;
+	export const TAURI_ENV_FAMILY: string;
 	export const TERM: string;
 	export const npm_package_name: string;
 	export const ZED_FORCE_CLI_MODE: string;
@@ -94,10 +97,12 @@ declare module '$env/static/private' {
 	export const QT_WAYLAND_RECONNECT: string;
 	export const KDE_SESSION_VERSION: string;
 	export const PAM_KWALLET5_LOGIN: string;
+	export const TAURI_ENV_TARGET_TRIPLE: string;
 	export const DISPLAY: string;
 	export const npm_lifecycle_event: string;
 	export const SHLVL: string;
 	export const CVS_RSH: string;
+	export const TAURI_CLI_VERBOSITY: string;
 	export const XDG_VTNR: string;
 	export const XDG_SESSION_ID: string;
 	export const MANAGERPIDFDID: string;
@@ -110,6 +115,7 @@ declare module '$env/static/private' {
 	export const DEBUGINFOD_URLS: string;
 	export const npm_package_json: string;
 	export const DEBUGINFOD_IMA_CERT_PATH: string;
+	export const TAURI_ENV_ARCH: string;
 	export const KDEDIRS: string;
 	export const JOURNAL_STREAM: string;
 	export const XDG_DATA_DIRS: string;
@@ -117,12 +123,15 @@ declare module '$env/static/private' {
 	export const PATH: string;
 	export const DBUS_SESSION_BUS_ADDRESS: string;
 	export const KDE_APPLICATIONS_AS_SCOPE: string;
+	export const npm_package_engines_pnpm: string;
 	export const MAIL: string;
 	export const npm_config_registry: string;
 	export const ALACRITTY_WINDOW_ID: string;
 	export const ZED_TERM: string;
 	export const npm_node_execpath: string;
+	export const npm_package_engines_node: string;
 	export const TERM_PROGRAM: string;
+	export const NODE_ENV: string;
 }
 
 /**
@@ -184,6 +193,7 @@ declare module '$env/dynamic/private' {
 		PWD: string;
 		LOGNAME: string;
 		XDG_SESSION_DESKTOP: string;
+		TAURI_ENV_PLATFORM: string;
 		XDG_SESSION_TYPE: string;
 		PNPM_HOME: string;
 		SYSTEMD_EXEC_PID: string;
@@ -193,8 +203,8 @@ declare module '$env/dynamic/private' {
 		HOME: string;
 		SSH_ASKPASS: string;
 		LANG: string;
-		_JAVA_AWT_WM_NONREPARENTING: string;
 		LS_COLORS: string;
+		_JAVA_AWT_WM_NONREPARENTING: string;
 		XDG_CURRENT_DESKTOP: string;
 		npm_package_version: string;
 		MEMORY_PRESSURE_WATCH: string;
@@ -210,7 +220,9 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_script: string;
 		MOZ_GMP_PATH: string;
 		XKB_DEFAULT_LAYOUT: string;
+		TAURI_ENV_PLATFORM_VERSION: string;
 		XDG_SESSION_CLASS: string;
+		TAURI_ENV_FAMILY: string;
 		TERM: string;
 		npm_package_name: string;
 		ZED_FORCE_CLI_MODE: string;
@@ -220,10 +232,12 @@ declare module '$env/dynamic/private' {
 		QT_WAYLAND_RECONNECT: string;
 		KDE_SESSION_VERSION: string;
 		PAM_KWALLET5_LOGIN: string;
+		TAURI_ENV_TARGET_TRIPLE: string;
 		DISPLAY: string;
 		npm_lifecycle_event: string;
 		SHLVL: string;
 		CVS_RSH: string;
+		TAURI_CLI_VERBOSITY: string;
 		XDG_VTNR: string;
 		XDG_SESSION_ID: string;
 		MANAGERPIDFDID: string;
@@ -236,6 +250,7 @@ declare module '$env/dynamic/private' {
 		DEBUGINFOD_URLS: string;
 		npm_package_json: string;
 		DEBUGINFOD_IMA_CERT_PATH: string;
+		TAURI_ENV_ARCH: string;
 		KDEDIRS: string;
 		JOURNAL_STREAM: string;
 		XDG_DATA_DIRS: string;
@@ -243,12 +258,15 @@ declare module '$env/dynamic/private' {
 		PATH: string;
 		DBUS_SESSION_BUS_ADDRESS: string;
 		KDE_APPLICATIONS_AS_SCOPE: string;
+		npm_package_engines_pnpm: string;
 		MAIL: string;
 		npm_config_registry: string;
 		ALACRITTY_WINDOW_ID: string;
 		ZED_TERM: string;
 		npm_node_execpath: string;
+		npm_package_engines_node: string;
 		TERM_PROGRAM: string;
+		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}
