@@ -1,5 +1,26 @@
 // Encryption service for Scriptoria Phase 1
-// ChaCha20-Poly1305 with Argon2id key derivation
+//
+// This module will contain:
+// - EncryptionService struct (holds master key in memory)
+// - Argon2id key derivation (memory: 64MB, iterations: 3)
+// - ChaCha20-Poly1305 encryption/decryption
+// - KeyManager (system keyring integration)
+// - PasswordValidator (strength checking)
+//
+// Core API:
+// - EncryptionService::derive_master_key(password, salt) -> [u8; 32]
+// - EncryptionService::generate_salt() -> Vec<u8>
+// - service.encrypt(plaintext: &str) -> Result<EncryptedContent>
+// - service.decrypt(encrypted: &EncryptedContent) -> Result<String>
+// - service.encrypt_binary(data: &[u8]) -> Result<EncryptedContent>
+// - service.decrypt_binary(encrypted: &EncryptedContent) -> Result<Vec<u8>>
+//
+// Security features:
+// - Master key zeroized on Drop (zeroize crate)
+// - System keyring storage for salt (keyring crate)
+// - No plaintext persistence
+//
+// See: scriptoria-phase-1-encryption-service.rs and security_architecture.md
 
 use argon2::{
     password_hash::{PasswordHasher, SaltString},
