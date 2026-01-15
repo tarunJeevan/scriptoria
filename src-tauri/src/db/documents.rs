@@ -448,14 +448,29 @@ mod tests {
         pool
     }
 
+    /// Helper function to create a test project
+    async fn create_test_project(pool: &SqlitePool) -> i64 {
+        sqlx::query!(
+            r#"
+            INSERT INTO projects (user_id, title, description)
+            VALUES (1, 'Test Project', 'A test project for unit tests')
+            "#
+        )
+        .execute(pool)
+        .await
+        .unwrap()
+        .last_insert_rowid()
+    }
+
     #[tokio::test]
     async fn test_create_and_retrieve_document() {
         let pool = setup_test_db().await;
+        let project_id = create_test_project(&pool).await;
         let repo = DocumentRepository::new(pool);
         let encryption = EncryptionService::new([0u8; 32]);
 
         let params = CreateDocumentParams {
-            project_id: 1,
+            project_id,
             title: "Test Document".to_string(),
             content: "Hello, world!".to_string(),
             doc_type: None,
@@ -476,11 +491,12 @@ mod tests {
     #[tokio::test]
     async fn test_update_document() {
         let pool = setup_test_db().await;
+        let project_id = create_test_project(&pool).await;
         let repo = DocumentRepository::new(pool);
         let encryption = EncryptionService::new([1u8; 32]);
 
         let params = CreateDocumentParams {
-            project_id: 1,
+            project_id,
             title: "Original".to_string(),
             content: "Original content".to_string(),
             doc_type: None,
@@ -511,11 +527,12 @@ mod tests {
     #[tokio::test]
     async fn test_version_creation() {
         let pool = setup_test_db().await;
+        let project_id = create_test_project(&pool).await;
         let repo = DocumentRepository::new(pool);
         let encryption = EncryptionService::new([2u8; 32]);
 
         let params = CreateDocumentParams {
-            project_id: 1,
+            project_id,
             title: "Versioned Doc".to_string(),
             content: "Version 1".to_string(),
             doc_type: None,
