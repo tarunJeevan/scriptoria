@@ -1,12 +1,12 @@
 {
-  "db_name": "SQLite",
-  "query": "\n            INSERT INTO document_versions (\n                document_id, version_number, content_encrypted,\n                word_count, char_count, label\n            )\n            VALUES (?, ?, ?, ?, ?, ?)\n            ",
-  "describe": {
-    "columns": [],
-    "parameters": {
-      "Right": 6
-    },
-    "nullable": []
-  },
-  "hash": "f02109f0aba1c5d516961135a9b792c158fd6765e5a107f7a3ec2632dc63bbdc"
+	"db_name": "SQLite",
+	"query": "\n            INSERT INTO document_versions (\n                document_id, version_number, content_encrypted,\n                word_count, char_count, label\n            )\n            VALUES (?, ?, ?, ?, ?, ?)\n            ",
+	"describe": {
+		"columns": [],
+		"parameters": {
+			"Right": 6
+		},
+		"nullable": []
+	},
+	"hash": "f02109f0aba1c5d516961135a9b792c158fd6765e5a107f7a3ec2632dc63bbdc"
 }
