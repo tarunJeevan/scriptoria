@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build outputs
+build/
+dist/
+.svelte-kit/
+
+# Rust/Cargo
+src-tauri/target/
+Cargo.lock
+
+# Generated files
+*.min.js
+*.min.css
+
+# Documentation (preserve original formatting)
+CHANGELOG.md
+LICENSE
+
+# Configuration files (preserve exact formatting)
+.vscode/
+.idea/

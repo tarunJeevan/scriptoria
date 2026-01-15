@@ -1,12 +1,12 @@
 {
-  "db_name": "SQLite",
-  "query": "\n             \tUPDATE documents\n                SET title = ?, content_encrypted = ?, word_count = ?, char_count = ?,\n                    entity_type = ?, parent_id = ?, display_order = ?, metadata = ?\n                WHERE id = ?\n                ",
-  "describe": {
-    "columns": [],
-    "parameters": {
-      "Right": 9
-    },
-    "nullable": []
-  },
-  "hash": "8d73735868e1d4320eed4a60bc8144e94591c15cfab931d7ddd63d0158b3d3f9"
+	"db_name": "SQLite",
+	"query": "\n             \tUPDATE documents\n                SET title = ?, content_encrypted = ?, word_count = ?, char_count = ?,\n                    entity_type = ?, parent_id = ?, display_order = ?, metadata = ?\n                WHERE id = ?\n                ",
+	"describe": {
+		"columns": [],
+		"parameters": {
+			"Right": 9
+		},
+		"nullable": []
+	},
+	"hash": "8d73735868e1d4320eed4a60bc8144e94591c15cfab931d7ddd63d0158b3d3f9"
 }

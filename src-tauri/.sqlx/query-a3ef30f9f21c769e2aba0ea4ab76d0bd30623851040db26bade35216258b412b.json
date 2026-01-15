@@ -1,20 +1,18 @@
 {
-  "db_name": "SQLite",
-  "query": "SELECT COALESCE(MAX(version_number), 0) + 1 FROM document_versions WHERE document_id = ?",
-  "describe": {
-    "columns": [
-      {
-        "name": "COALESCE(MAX(version_number), 0) + 1",
-        "ordinal": 0,
-        "type_info": "Integer"
-      }
-    ],
-    "parameters": {
-      "Right": 1
-    },
-    "nullable": [
-      false
-    ]
-  },
-  "hash": "a3ef30f9f21c769e2aba0ea4ab76d0bd30623851040db26bade35216258b412b"
+	"db_name": "SQLite",
+	"query": "SELECT COALESCE(MAX(version_number), 0) + 1 FROM document_versions WHERE document_id = ?",
+	"describe": {
+		"columns": [
+			{
+				"name": "COALESCE(MAX(version_number), 0) + 1",
+				"ordinal": 0,
+				"type_info": "Integer"
+			}
+		],
+		"parameters": {
+			"Right": 1
+		},
+		"nullable": [false]
+	},
+	"hash": "a3ef30f9f21c769e2aba0ea4ab76d0bd30623851040db26bade35216258b412b"
 }

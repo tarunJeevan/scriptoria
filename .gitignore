@@ -16,6 +16,8 @@ dist-ssr
 .netlify
 .wrangler
 build/
+.svelte-kit/
+src-tauri/target/
 
 # Editor directories and files
 .vs

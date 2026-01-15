@@ -1,12 +1,12 @@
 {
-  "db_name": "SQLite",
-  "query": "\n                UPDATE documents\n                SET title = ?, entity_type = ?, parent_id = ?, display_order = ?, metadata = ?\n                WHERE id = ?\n                ",
-  "describe": {
-    "columns": [],
-    "parameters": {
-      "Right": 6
-    },
-    "nullable": []
-  },
-  "hash": "e4423fc281b9e53b6725cb134bc3c830f713a33741ebf9639a95f07b2a1de10c"
+	"db_name": "SQLite",
+	"query": "\n                UPDATE documents\n                SET title = ?, entity_type = ?, parent_id = ?, display_order = ?, metadata = ?\n                WHERE id = ?\n                ",
+	"describe": {
+		"columns": [],
+		"parameters": {
+			"Right": 6
+		},
+		"nullable": []
+	},
+	"hash": "e4423fc281b9e53b6725cb134bc3c830f713a33741ebf9639a95f07b2a1de10c"
 }

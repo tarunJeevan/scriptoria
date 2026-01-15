@@ -1,5 +1,19 @@
 // Database models for Scriptoria Phase 1
-// Using sqlx with SQLite + SQLCipher
+//
+// This module will contain type-safe representations of database entities:
+// - Document, DecryptedDocument, DocumentVersion
+// - Project, ProjectMetadata
+// - AiContextChunk, VectorEmbedding
+// - ChatSession, ChatMessage
+// - EncryptedContent (encryption wrapper)
+// - Query parameter structs (CreateDocumentParams, UpdateDocumentParams)
+//
+// Models will use:
+// - sqlx::FromRow for database mapping
+// - serde::{Serialize, Deserialize} for Tauri IPC
+// - Custom types for encrypted content (nonce, tag, ciphertext)
+//
+// See: scriptoria-phase-1-rust-database-models.rs in project docs
 
 // use blake3::hazmat::Mode;
 use serde::{Deserialize, Serialize};

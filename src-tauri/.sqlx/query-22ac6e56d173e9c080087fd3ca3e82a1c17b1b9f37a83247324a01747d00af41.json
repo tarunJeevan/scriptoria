@@ -1,104 +1,104 @@
 {
-  "db_name": "SQLite",
-  "query": "\n            SELECT *\n            FROM documents\n            WHERE id = ? AND deleted = 0\n            ",
-  "describe": {
-    "columns": [
-      {
-        "name": "id",
-        "ordinal": 0,
-        "type_info": "Integer"
-      },
-      {
-        "name": "project_id",
-        "ordinal": 1,
-        "type_info": "Integer"
-      },
-      {
-        "name": "title",
-        "ordinal": 2,
-        "type_info": "Text"
-      },
-      {
-        "name": "content_encrypted",
-        "ordinal": 3,
-        "type_info": "Blob"
-      },
-      {
-        "name": "word_count",
-        "ordinal": 4,
-        "type_info": "Integer"
-      },
-      {
-        "name": "char_count",
-        "ordinal": 5,
-        "type_info": "Integer"
-      },
-      {
-        "name": "created_at",
-        "ordinal": 6,
-        "type_info": "Text"
-      },
-      {
-        "name": "updated_at",
-        "ordinal": 7,
-        "type_info": "Text"
-      },
-      {
-        "name": "last_edited_at",
-        "ordinal": 8,
-        "type_info": "Text"
-      },
-      {
-        "name": "doc_type",
-        "ordinal": 9,
-        "type_info": "Text"
-      },
-      {
-        "name": "entity_type",
-        "ordinal": 10,
-        "type_info": "Text"
-      },
-      {
-        "name": "parent_id",
-        "ordinal": 11,
-        "type_info": "Integer"
-      },
-      {
-        "name": "display_order",
-        "ordinal": 12,
-        "type_info": "Integer"
-      },
-      {
-        "name": "deleted",
-        "ordinal": 13,
-        "type_info": "Bool"
-      },
-      {
-        "name": "metadata",
-        "ordinal": 14,
-        "type_info": "Text"
-      }
-    ],
-    "parameters": {
-      "Right": 1
-    },
-    "nullable": [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      true
-    ]
-  },
-  "hash": "22ac6e56d173e9c080087fd3ca3e82a1c17b1b9f37a83247324a01747d00af41"
+	"db_name": "SQLite",
+	"query": "\n            SELECT *\n            FROM documents\n            WHERE id = ? AND deleted = 0\n            ",
+	"describe": {
+		"columns": [
+			{
+				"name": "id",
+				"ordinal": 0,
+				"type_info": "Integer"
+			},
+			{
+				"name": "project_id",
+				"ordinal": 1,
+				"type_info": "Integer"
+			},
+			{
+				"name": "title",
+				"ordinal": 2,
+				"type_info": "Text"
+			},
+			{
+				"name": "content_encrypted",
+				"ordinal": 3,
+				"type_info": "Blob"
+			},
+			{
+				"name": "word_count",
+				"ordinal": 4,
+				"type_info": "Integer"
+			},
+			{
+				"name": "char_count",
+				"ordinal": 5,
+				"type_info": "Integer"
+			},
+			{
+				"name": "created_at",
+				"ordinal": 6,
+				"type_info": "Text"
+			},
+			{
+				"name": "updated_at",
+				"ordinal": 7,
+				"type_info": "Text"
+			},
+			{
+				"name": "last_edited_at",
+				"ordinal": 8,
+				"type_info": "Text"
+			},
+			{
+				"name": "doc_type",
+				"ordinal": 9,
+				"type_info": "Text"
+			},
+			{
+				"name": "entity_type",
+				"ordinal": 10,
+				"type_info": "Text"
+			},
+			{
+				"name": "parent_id",
+				"ordinal": 11,
+				"type_info": "Integer"
+			},
+			{
+				"name": "display_order",
+				"ordinal": 12,
+				"type_info": "Integer"
+			},
+			{
+				"name": "deleted",
+				"ordinal": 13,
+				"type_info": "Bool"
+			},
+			{
+				"name": "metadata",
+				"ordinal": 14,
+				"type_info": "Text"
+			}
+		],
+		"parameters": {
+			"Right": 1
+		},
+		"nullable": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false,
+			false,
+			false,
+			true,
+			false,
+			true,
+			true,
+			false,
+			false,
+			true
+		]
+	},
+	"hash": "22ac6e56d173e9c080087fd3ca3e82a1c17b1b9f37a83247324a01747d00af41"
 }

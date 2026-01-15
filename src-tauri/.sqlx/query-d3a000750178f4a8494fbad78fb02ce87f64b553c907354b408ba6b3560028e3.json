@@ -1,12 +1,12 @@
 {
-  "db_name": "SQLite",
-  "query": "\n            INSERT INTO documents (\n            \tproject_id, title, content_encrypted, word_count, char_count,\n             \tdoc_type, entity_type, parent_id, display_order, metadata\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n            ",
-  "describe": {
-    "columns": [],
-    "parameters": {
-      "Right": 10
-    },
-    "nullable": []
-  },
-  "hash": "d3a000750178f4a8494fbad78fb02ce87f64b553c907354b408ba6b3560028e3"
+	"db_name": "SQLite",
+	"query": "\n            INSERT INTO documents (\n            \tproject_id, title, content_encrypted, word_count, char_count,\n             \tdoc_type, entity_type, parent_id, display_order, metadata\n            )\n            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n            ",
+	"describe": {
+		"columns": [],
+		"parameters": {
+			"Right": 10
+		},
+		"nullable": []
+	},
+	"hash": "d3a000750178f4a8494fbad78fb02ce87f64b553c907354b408ba6b3560028e3"
 }
