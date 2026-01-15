@@ -1,1 +1,0 @@
-import{f as o,a as n}from"../chunks/CGO84EJ7.js";var e=o("<main><h1>Scriptoria Main Page</h1> <p>An incomplete main page for Scriptoria. Needs to be filled in.</p></main>");function r(a){var i=e();n(a,i)}export{r as component};
