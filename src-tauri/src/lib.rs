@@ -32,12 +32,23 @@ pub fn run() {
             #[cfg(debug_assertions)]
             println!("Database URL: {}", db_url);
 
-            // TODO [Chunk 0]: Initialize database pool here
-            // let pool = db::create_pool(&db_url).await?;
-            // app.manage(pool);
+            // Initialize database pool with tokio runtime
+            let runtime = tokio::runtime::Runtime::new().unwrap();
+            let pool = runtime.block_on(async {
+                db::create_pool(&db_url)
+                    .await
+                    .expect("Failed to create database pool")
+            });
 
-            // TODO [Chunk 0]: Run migrations here
-            // db::run_migrations(&pool).await?;
+            // Run migrations
+            runtime.block_on(async {
+                db::run_migrations(&pool)
+                    .await
+                    .expect("Failed to run migrations")
+            });
+
+            // Store pool in app state
+            app.manage(pool);
 
             Ok(())
         })
