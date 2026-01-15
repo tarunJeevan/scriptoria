@@ -13,11 +13,11 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			// default settings produce 'build' directory which matches Tauri config
-			pages: 'build',					// Where HTML files go
-			assets: 'build',				// Where JS/CSS/Images go
-			fallback: 'index.html',	// SPA fallback (required for client-side routing)
-			precompress: false,			// Son't gzip (Tauri serves frontend files locally, no network transfer)
-			strict: true						// Error on missing prerendered routes
+			pages: 'build', // Where HTML files go
+			assets: 'build', // Where JS/CSS/Images go
+			fallback: 'index.html', // SPA fallback (required for client-side routing)
+			precompress: false, // Son't gzip (Tauri serves frontend files locally, no network transfer)
+			strict: true // Error on missing prerendered routes
 		}),
 
 		// Application directories
@@ -25,8 +25,8 @@ const config = {
 
 		// Path configuration
 		paths: {
-			base: '',		// No base path (served from localhost)
-			assets: ''	// Assets served from same origin
+			base: '', // No base path (served from localhost)
+			assets: '' // Assets served from same origin
 		},
 
 		// Alias configuration
@@ -37,7 +37,7 @@ const config = {
 		// Environment variables configuration
 		env: {
 			dir: process.cwd(),
-			publicPrefix: 'PUBLIC_'		// Determines which env vars are exposed to the webview
+			publicPrefix: 'PUBLIC_' // Determines which env vars are exposed to the webview
 		},
 
 		// Disable SSR
@@ -47,7 +47,7 @@ const config = {
 		csp: {
 			mode: 'auto',
 			directives: {
-				"script-src": ['self']	// Only allow scripts from same origin
+				'script-src': ['self'] // Only allow scripts from same origin
 			}
 		}
 	}

@@ -1,83 +1,83 @@
 {
-  "$schema": "https://schema.tauri.app/config/2",
-  "productName": "scriptoria",
-  "version": "0.1.0",
-  "identifier": "com.scriptoria.app",
-  "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
-    "devUrl": "http://localhost:1420",
-    "frontendDist": "../build"
-  },
-  "app": {
-    "withGlobalTauri": false,
-    "windows": [
-      {
-        "title": "Scriptoria",
-        "width": 1280,
-        "height": 800,
-        "minWidth": 800,
-        "minHeight": 600,
-        "resizable": true,
-        "maximizable": true,
-        "minimizable": true,
-        "closable": true,
-        "fullscreen": false,
-        "decorations": true,
-        "alwaysOnTop": false,
-        "transparent": false,
-        "visible": true,
-        "center": true
-      }
-    ],
-    "security": {
-      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; font-src 'self' data:"
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": ["deb", "rpm"],
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
-    ],
-    "resources": [],
-    "externalBin": [],
-    "copyright": "",
-    "category": "Productivity",
-    "shortDescription": "An AI-enhanced creative writing studio",
-    "longDescription": "Scriptoria is a local-first, AI-enhanced creative writing platform designed to empower writers through a deeply customizable workspace combining intelligent assistants, rich editing tools, and comprehensive worldbuilding features.",
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": ""
-    },
-    "macOS": {
-      "entitlements": null,
-      "exceptionDomain": "",
-      "frameworks": [],
-      "providerShortName": null,
-      "signingIdentity": null
-    },
-    "linux": {
-      "appimage": {
-        "bundleMediaFramework": false,
-        "files": {}
-      },
-      "deb": {
-        "priority": "optional",
-        "section": "productivity",
-        "depends": []
-      },
-      "rpm": {
-        "depends": [],
-        "epoch": 0,
-        "release": "1"
-      }
-    }
-  },
-  "plugins": {}
+	"$schema": "https://schema.tauri.app/config/2",
+	"productName": "scriptoria",
+	"version": "0.1.0",
+	"identifier": "com.scriptoria.app",
+	"build": {
+		"beforeDevCommand": "pnpm dev",
+		"beforeBuildCommand": "pnpm build",
+		"devUrl": "http://localhost:1420",
+		"frontendDist": "../build"
+	},
+	"app": {
+		"withGlobalTauri": false,
+		"windows": [
+			{
+				"title": "Scriptoria",
+				"width": 1280,
+				"height": 800,
+				"minWidth": 800,
+				"minHeight": 600,
+				"resizable": true,
+				"maximizable": true,
+				"minimizable": true,
+				"closable": true,
+				"fullscreen": false,
+				"decorations": true,
+				"alwaysOnTop": false,
+				"transparent": false,
+				"visible": true,
+				"center": true
+			}
+		],
+		"security": {
+			"csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: asset: https://asset.localhost; font-src 'self' data:"
+		}
+	},
+	"bundle": {
+		"active": true,
+		"targets": ["deb", "rpm"],
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/128x128@2x.png",
+			"icons/icon.icns",
+			"icons/icon.ico"
+		],
+		"resources": [],
+		"externalBin": [],
+		"copyright": "",
+		"category": "Productivity",
+		"shortDescription": "An AI-enhanced creative writing studio",
+		"longDescription": "Scriptoria is a local-first, AI-enhanced creative writing platform designed to empower writers through a deeply customizable workspace combining intelligent assistants, rich editing tools, and comprehensive worldbuilding features.",
+		"windows": {
+			"certificateThumbprint": null,
+			"digestAlgorithm": "sha256",
+			"timestampUrl": ""
+		},
+		"macOS": {
+			"entitlements": null,
+			"exceptionDomain": "",
+			"frameworks": [],
+			"providerShortName": null,
+			"signingIdentity": null
+		},
+		"linux": {
+			"appimage": {
+				"bundleMediaFramework": false,
+				"files": {}
+			},
+			"deb": {
+				"priority": "optional",
+				"section": "productivity",
+				"depends": []
+			},
+			"rpm": {
+				"depends": [],
+				"epoch": 0,
+				"release": "1"
+			}
+		}
+	},
+	"plugins": {}
 }
