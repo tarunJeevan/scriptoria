@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api/core';
 
-	let appVersion = '0.1.0';
+	const appVersion = '0.1.0';
 	let tauriVersion = '';
 
 	onMount(async () => {
