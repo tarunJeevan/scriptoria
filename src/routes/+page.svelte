@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { invoke } from '@tauri-apps/api/core';
 
 	const appVersion = '0.1.0';
@@ -23,6 +25,11 @@
 	<div class="container">
 		<h1>Scriptoria</h1>
 		<p class="subtitle">AI-Enhanced Creative Writing Studio</p>
+
+		<!-- NOTE: Button to go to Editor Demo -->
+		<button class="editor-demo-button" onclick={() => goto(resolve('/editor-demo', {}))}
+			>Go to Editor Demo</button
+		>
 
 		<div class="info-card">
 			<h2>Phase 1: Chunk 1 Complete! 🎉</h2>
@@ -58,6 +65,22 @@
 </main>
 
 <style>
+	.editor-demo-button {
+		background-color: steelblue;
+		color: white;
+		padding: 12px 24px;
+		border: 2px solid royalblue;
+		border-radius: 6px;
+		font-size: 16px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.editor-demo-button:hover {
+		background-color: mediumslateblue;
+		border-color: blueviolet;
+	}
+
 	:global(body) {
 		margin: 0;
 		padding: 0;
