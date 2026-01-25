@@ -64,141 +64,90 @@
 	</div>
 </main>
 
-<style>
+<style lang="postcss">
+	@reference "tailwindcss";
+
 	.editor-demo-button {
-		background-color: steelblue;
-		color: white;
-		padding: 12px 24px;
-		border: 2px solid royalblue;
-		border-radius: 6px;
-		font-size: 16px;
-		cursor: pointer;
-		transition: all 0.3s ease;
+		@apply bg-blue-400 px-6 py-3 text-white border-2 border-blue-500 rounded-md text-base cursor-pointer transition-all duration-300 ease-in-out;
 	}
 
 	.editor-demo-button:hover {
-		background-color: mediumslateblue;
-		border-color: blueviolet;
+		@apply bg-indigo-400 border-violet-500;
 	}
 
 	:global(body) {
-		margin: 0;
-		padding: 0;
-		font-family:
-			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		color: #333;
+		@apply m-0 p-0 font-sans text-gray-700 bg-linear-135 from-indigo-400 to-violet-500;
 	}
 
 	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 100vh;
-		padding: 2rem;
+		@apply flex justify-center items-center min-h-screen p-8;
 	}
 
 	.container {
-		background: white;
-		border-radius: 16px;
-		padding: 3rem;
-		max-width: 600px;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		@apply bg-white rounded-2xl p-12 max-w-[600px] shadow-2xl;
 	}
 
 	h1 {
-		font-size: 3rem;
-		margin: 0 0 0.5rem 0;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		@apply text-5xl mb-2 bg-linear-135 from-indigo-400 to-violet-500 bg-clip-text text-transparent;
 	}
 
 	.subtitle {
-		font-size: 1.2rem;
-		color: #666;
-		margin: 0 0 2rem 0;
+		@apply text-xl text-gray-500 mb-8;
 	}
 
 	.info-card {
-		background: #f8f9fa;
-		border-radius: 12px;
-		padding: 1.5rem;
-		margin-bottom: 2rem;
+		@apply bg-gray-100 rounded-xl p-6 mb-8;
 	}
 
 	.info-card h2 {
-		margin: 0 0 1rem 0;
-		font-size: 1.5rem;
-		color: #667eea;
+		@apply mb-4 text-2xl text-indigo-400;
 	}
 
 	.info-card p {
-		margin: 0 0 1rem 0;
-		color: #666;
+		@apply mb-4 text-gray-500;
 	}
 
 	.version-info {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+		@apply flex flex-col gap-2;
 	}
 
 	.version-item {
-		display: flex;
-		justify-content: space-between;
-		padding: 0.5rem;
-		background: white;
-		border-radius: 6px;
+		@apply flex justify-between p-2 bg-white rounded-md;
 	}
 
 	.label {
-		font-weight: 600;
-		color: #555;
+		@apply font-semibold text-gray-600;
 	}
 
 	.value {
-		font-family: 'Courier New', monospace;
-		color: #667eea;
+		@apply font-mono text-indigo-400;
 	}
 
 	.next-steps {
-		background: #fff9e6;
-		border-left: 4px solid #ffc107;
-		border-radius: 8px;
-		padding: 1.5rem;
-		margin-bottom: 2rem;
+		@apply bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 mb-8;
 	}
 
 	.next-steps h3 {
-		margin: 0 0 1rem 0;
-		color: #ff9800;
+		@apply mb-4 text-orange-400;
 	}
 
 	.next-steps ul {
-		margin: 0;
-		padding-left: 1.5rem;
+		@apply m-0 pl-6;
 	}
 
 	.next-steps li {
-		margin-bottom: 0.5rem;
-		color: #666;
+		@apply mb-2 text-gray-500;
 	}
 
 	.next-steps strong {
-		color: #ff9800;
+		@apply text-orange-300;
 	}
 
 	footer {
-		text-align: center;
-		padding-top: 2rem;
-		border-top: 1px solid #e0e0e0;
+		@apply text-center pt-8 border-t border-gray-200;
 	}
 
 	footer p {
-		margin: 0;
-		color: #999;
-		font-size: 0.9rem;
+		@apply m-0 text-gray-400 text-sm;
 	}
 </style>
