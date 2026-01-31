@@ -84,7 +84,7 @@
 	}
 
 	.container {
-		@apply bg-white rounded-2xl p-12 max-w-[600px] shadow-2xl;
+		@apply bg-white rounded-2xl p-12 max-w-150 shadow-2xl;
 	}
 
 	h1 {
