@@ -14,13 +14,25 @@
 		"tauri:dev": "tauri dev",
 		"tauri:build": "tauri build",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
 		"@tauri-apps/api": "^2.9.1",
 		"@tauri-apps/plugin-fs": "^2.4.5",
 		"@tauri-apps/plugin-opener": "^2.5.3",
-		"@tauri-apps/plugin-shell": "^2.3.4"
+		"@tauri-apps/plugin-shell": "^2.3.4",
+		"@tiptap/core": "^3.15.3",
+		"@tiptap/extension-character-count": "^3.15.3",
+		"@tiptap/extension-link": "^3.15.3",
+		"@tiptap/extension-mention": "^3.15.3",
+		"@tiptap/extension-placeholder": "^3.15.3",
+		"@tiptap/extension-table-of-contents": "^3.15.3",
+		"@tiptap/extension-typography": "^3.15.3",
+		"@tiptap/pm": "^3.15.3",
+		"@tiptap/starter-kit": "^3.15.3"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
@@ -32,6 +44,8 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.18",
 		"@tauri-apps/cli": "^2.9.6",
+		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/svelte": "^5.3.1",
 		"@types/node": "^22",
 		"@typescript-eslint/eslint-plugin": "^8.53.0",
 		"@typescript-eslint/parser": "^8.53.0",
@@ -39,6 +53,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.13.1",
 		"globals": "^16.5.0",
+		"jsdom": "^27.4.0",
 		"prettier": "^3.7.4",
 		"prettier-plugin-svelte": "^3.4.1",
 		"svelte": "^5.46.3",
