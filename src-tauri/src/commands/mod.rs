@@ -8,3 +8,10 @@
 // - list_documents(project_id) -> Result<Vec<DocumentSummary>>
 //
 // Commands will be registered in lib.rs invoke_handler after implementation.
+
+pub mod documents;
+
+// NOTE: Future command modules (Chunks 5-8)
+// pub mod ai;
+// pub mod projects;
+// pub mod settings;
