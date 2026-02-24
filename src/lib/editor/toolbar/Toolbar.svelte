@@ -99,7 +99,7 @@
 	}
 </script>
 
-<div class="toolbar">
+<div class="flex items-center gap-1 p-2 border-b border-gray-300 bg-gray-50 flex-wrap">
 	<!-- Undo/Redo -->
 	<ToolbarButton onclick={undo} disabled={!$canUndo} title="Undo (Ctrl+z)">
 		<svg
@@ -139,7 +139,7 @@
 
 	<!-- Heading Dropdown -->
 	<select
-		class="heading-select"
+		class="px-3 py-1 border border-gray-300 rounded bg-white text-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
 		onchange={(e) => {
 			const value = e.currentTarget.value;
 			if (value === 'p') {
@@ -375,15 +375,23 @@
 
 	<!-- Link Dialog -->
 	{#if showLinkDialog}
-		<div class="dialog-overlay" onclick={() => closeDialog()} role="presentation">
-			<div class="dialog" onclick={(e) => e.stopPropagation()} role="presentation">
-				<h3 class="dialog-title">Insert Link</h3>
+		<div
+			class="fixed inset-0 bg-black opacity-50 flex items-center justify-center z-50"
+			onclick={() => closeDialog()}
+			role="presentation"
+		>
+			<div
+				class="bg-white rounded-lg shadow-xl p-6 w-96 max-w-full mx-4"
+				onclick={(e) => e.stopPropagation()}
+				role="presentation"
+			>
+				<h3 class="text-lg font-semibold mb-4">Insert Link</h3>
 				<input
 					type="url"
 					bind:value={linkUrl}
 					bind:this={inputElement}
 					placeholder="https://example.com"
-					class="dialog-input"
+					class="w-full px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
 					onkeydown={(e) => {
 						if (e.key === 'Enter') {
 							setLink();
@@ -392,58 +400,21 @@
 						}
 					}}
 				/>
-				<div class="dialog-actions">
-					<button class="dialog-button dialog-button-secondary" onclick={removeLink}>
+				<div class="flex justify-end gap-2">
+					<button
+						class="px-4 py-2 rounded font-medium transition-colors bg-gray-200 text-gray-800 hover:bg-gray-300"
+						onclick={removeLink}
+					>
 						Remove Link
 					</button>
-					<button class="dialog-button dialog-button-primary" onclick={setLink}> Insert </button>
+					<button
+						class="px-4 py-2 rounded font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
+						onclick={setLink}
+					>
+						Insert
+					</button>
 				</div>
 			</div>
 		</div>
 	{/if}
 </div>
-
-<style lang="postcss">
-	@reference "tailwindcss";
-
-	.toolbar {
-		@apply flex items-center gap-1 p-2 border-b border-gray-300 bg-gray-50 flex-wrap;
-	}
-
-	.heading-select {
-		@apply px-3 py-1 border border-gray-300 rounded bg-white text-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500;
-	}
-
-	/* Dialog Styles */
-	.dialog-overlay {
-		@apply fixed inset-0 bg-black opacity-50 flex items-center justify-center z-50;
-	}
-
-	.dialog {
-		@apply bg-white rounded-lg shadow-xl p-6 w-96 max-w-full mx-4;
-	}
-
-	.dialog-title {
-		@apply text-lg font-semibold mb-4;
-	}
-
-	.dialog-input {
-		@apply w-full px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500;
-	}
-
-	.dialog-actions {
-		@apply flex justify-end gap-2;
-	}
-
-	.dialog-button {
-		@apply px-4 py-2 rounded font-medium transition-colors;
-	}
-
-	.dialog-button-primary {
-		@apply bg-blue-600 text-white hover:bg-blue-700;
-	}
-
-	.dialog-button-secondary {
-		@apply bg-gray-200 text-gray-800 hover:bg-gray-300;
-	}
-</style>

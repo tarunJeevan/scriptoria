@@ -129,25 +129,19 @@
 	}
 </script>
 
-<div class="editor-container">
-	<div bind:this={editorElement} class="editor-content"></div>
+<div class="flex-1 border border-gray-300 rounded-lg overflow-auto bg-white">
+	<div bind:this={editorElement} class="editor-content focus:outline-none"></div>
 </div>
 
-<style lang="postcss">
-	@reference "tailwindcss";
-
-	.editor-container {
-		@apply border border-gray-300 rounded-lg overflow-hidden bg-white;
-	}
-
-	.editor-content :global(.ProseMirror) {
-		@apply focus:outline-none;
+<style>
+	.editor-content :global(.ProseMirror:focus) {
+		outline: none;
 	}
 
 	/* Placeholder styling */
 	.editor-content :global(.ProseMirror p.is-editor-empty:first-child::before) {
-		@apply text-gray-400;
 		content: attr(data-placeholder);
+		color: #99a1af;
 		float: left;
 		height: 0;
 		pointer-events: none;
@@ -155,56 +149,120 @@
 
 	/* Selection styling */
 	.editor-content :global(.ProseMirror-selectednode) {
-		@apply outline-2 outline-blue-500;
+		outline: 2px solid #3b82f6;
 	}
 
 	/* List styling */
 	.editor-content :global(.ProseMirror ul),
 	.editor-content :global(.ProseMirror ol) {
-		@apply pl-6;
+		padding-left: 1.5rem;
 	}
 
 	/* Link styling */
 	.editor-content :global(.ProseMirror a) {
-		@apply text-blue-600 underline hover:text-blue-800;
+		color: #155dfc;
+		text-decoration: underline;
+	}
+
+	/* Link styling while hovering */
+	.editor-content :global(.ProseMirror a):hover {
+		color: #193cb8;
 	}
 
 	/* Code block styling */
 	.editor-content :global(.ProseMirror pre) {
-		@apply bg-gray-100 rounded p-4 font-mono text-sm;
+		background-color: #f3f4f6;
+		border-radius: 0.25rem;
+		padding: 1rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
+		font-size: 0.875rem;
+		overflow: auto;
 	}
 
 	.editor-content :global(.ProseMirror code) {
-		@apply bg-gray-100 rounded px-1 font-mono text-sm;
+		background-color: #f3f4f6;
+		border-radius: 0.25rem;
+		padding: 0 0.25rem;
+		font-family:
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			'Open Sans',
+			'Helvetica Neue',
+			sans-serif;
+		font-size: 0.875rem;
 	}
 
 	/* Blockquote stylign */
 	.editor-content :global(.ProseMirror blockquote) {
-		@apply border-l-4 border-gray-300 pl-4 italic text-gray-700;
+		border-left: 4px solid #d1dfdc;
+		padding-left: 1rem;
+		font-style: italic;
+		color: #364153;
 	}
 
 	/* Heading styling */
 	.editor-content :global(.ProseMirror h1) {
-		@apply text-4xl font-bold mt-6 mb-4;
+		font-size: 2.25rem;
+		line-height: 2.5rem;
+		font-weight: 700;
+		margin-top: 1.5rem;
+		margin-bottom: 1rem;
 	}
 
 	.editor-content :global(.ProseMirror h2) {
-		@apply text-3xl font-bold mt-5 mb-3;
+		font-size: 1.875rem;
+		line-height: 2.25rem;
+		font-weight: 700;
+		margin-top: 1.25rem;
+		margin-bottom: 0.75rem;
 	}
 
 	.editor-content :global(.ProseMirror h3) {
-		@apply text-2xl font-bold mt-4 mb-2;
+		font-size: 1.5rem;
+		line-height: 2rem;
+		font-weight: 700;
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.editor-content :global(.ProseMirror h4) {
-		@apply text-xl font-bold mt-3 mb-2;
+		font-size: 1.25rem;
+		line-height: 1.75rem;
+		font-weight: 700;
+		margin-top: 0.75rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.editor-content :global(.ProseMirror h5) {
-		@apply text-lg font-bold mt-2 mb-1;
+		font-size: 1.125rem;
+		line-height: 1.75rem;
+		font-weight: 700;
+		margin-top: 0.5rem;
+		margin-bottom: 0.25rem;
 	}
 
 	.editor-content :global(.ProseMirror h6) {
-		@apply text-base font-bold mt-2 mb-1;
+		font-size: 1rem;
+		line-height: 1.5rem;
+		font-weight: 700;
+		margin-top: 0.5rem;
+		margin-bottom: 0.25rem;
 	}
 </style>
