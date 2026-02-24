@@ -36,23 +36,31 @@
 			}, 5000);
 		}
 	});
+
+	// Reactive class string for Save Button
+	let saveButtonClass = $derived.by(() => {
+		let baseClasses = 'px-4 py-2 rounded font-medium transition-all';
+		if (saveStatus === 'saved') {
+			baseClasses += 'bg-green-600 text-white';
+		} else if (saveStatus === 'saving') {
+			baseClasses += 'bg-gray-400 text-white cursor-wait';
+		} else {
+			baseClasses += 'bg-blue-600 text-white hover:bg-blue-700';
+		}
+		return baseClasses;
+	});
 </script>
 
-<div class="editor-page">
-	<header class="editor-header">
-		<h1 class="editor-title">Scriptoria Editor Demo</h1>
-		<div class="editor-actions">
-			<div class="editor-stats">
+<div class="flex flex-col h-screen bg-gray-50">
+	<header class="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-300">
+		<h1 class="text-2xl font-bold text-gray-800">Scriptoria Editor Demo</h1>
+		<div class="flex items-center gap-4">
+			<div class="text-sm text-gray-600 flex items-center gap-2">
 				<span>{$editorStats.words} words</span>
-				<span class="separator">•</span>
+				<span class="text-gray-400">•</span>
 				<span>{$editorStats.characters} characters</span>
 			</div>
-			<button
-				class="save-button"
-				class:saved={saveStatus === 'saved'}
-				class:saving={saveStatus === 'saving'}
-				onclick={saveDocument}
-			>
+			<button class={saveButtonClass} onclick={saveDocument}>
 				{#if saveStatus === 'saved'}
 					✓ Saved
 				{:else if saveStatus === 'saving'}
@@ -64,7 +72,7 @@
 		</div>
 	</header>
 
-	<div class="editor-wrapper">
+	<div class="flex flex-col flex-1 overflow-hidden bg-white shadow-lg mx-6 my-4 rounded-lg">
 		<Toolbar />
 		<Editor
 			bind:this={editor}
@@ -76,73 +84,22 @@
 		/>
 	</div>
 
-	<footer class="editor-footer">
-		<p class="hint">
+	<footer class="px-6 py-3 bg-white border-t border-gray-300">
+		<p class="text-sm text-gray-600">
 			Tip: Use <kbd>Ctrl+B</kbd> for bold, <kbd>Ctrl+I</kbd> for italics, and <kbd>Ctrl+K</kbd> for links
 		</p>
 	</footer>
 </div>
 
-<style lang="postcss">
-	@reference "tailwindcss";
-
-	.editor-page {
-		@apply flex flex-col h-screen bg-gray-50;
-	}
-
-	.editor-header {
-		@apply flex items-center justify-between px-6 py-4 bg-white border-b border-gray-300;
-	}
-
-	.editor-title {
-		@apply text-2xl font-bold text-gray-800;
-	}
-
-	.editor-actions {
-		@apply flex items-center gap-4;
-	}
-
-	.editor-stats {
-		@apply text-sm text-gray-600 flex items-center gap-2;
-	}
-
-	.separator {
-		@apply text-gray-400;
-	}
-
-	.save-button {
-		@apply px-4 py-2 rounded font-medium transition-all;
-	}
-
-	.save-button:not(.saved):not(.saving) {
-		@apply bg-blue-600 text-white hover:bg-blue-700;
-	}
-
-	.save-button.saving {
-		@apply bg-gray-400 text-white cursor-wait;
-	}
-
-	.save-button.saved {
-		@apply bg-green-600 text-white;
-	}
-
-	.editor-wrapper {
-		@apply flex flex-col flex-1 overflow-hidden bg-white shadow-lg mx-6 my-4 rounded-lg;
-	}
-
-	.editor-wrapper :global(.editor-container) {
-		@apply flex-1 overflow-auto;
-	}
-
-	.editor-footer {
-		@apply px-6 py-3 bg-white border-t border-gray-300;
-	}
-
-	.hint {
-		@apply text-sm text-gray-600;
-	}
-
+<style>
 	kbd {
-		@apply px-2 py-1 bg-gray-200 rounded text-xl font-mono;
+		padding: 0.25rem 0.5rem;
+		background-color: #e5e7eb;
+		border-radius: 0.25rem;
+		font-size: 1.25rem;
+		line-height: 1.4;
+		font-family:
+			ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+			monospace;
 	}
 </style>

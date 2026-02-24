@@ -21,133 +21,67 @@
 	});
 </script>
 
-<main>
-	<div class="container">
-		<h1>Scriptoria</h1>
-		<p class="subtitle">AI-Enhanced Creative Writing Studio</p>
+<main class="flex justify-center items-center min-h-screen p-8">
+	<div class="bg-white rounded-2xl p-12 max-w-150 shadow-2xl">
+		<h1
+			class="text-5xl mb-2 bg-linear-135 from-indigo-400 to-violet-500 bg-clip-text text-transparent"
+		>
+			Scriptoria
+		</h1>
+		<p class="text-xl text-gray-500 mb-8">AI-Enhanced Creative Writing Studio</p>
 
 		<!-- NOTE: Button to go to Editor Demo -->
-		<button class="editor-demo-button" onclick={() => goto(resolve('/editor-demo', {}))}
-			>Go to Editor Demo</button
+		<button
+			class="bg-blue-400 px-6 py-3 text-white border-2 border-blue-500 rounded-md text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-indigo-400 hover:border-violet-500"
+			onclick={() => goto(resolve('/editor-demo', {}))}
 		>
+			Go to Editor Demo
+		</button>
 
-		<div class="info-card">
-			<h2>Phase 1: Chunk 1 Complete! 🎉</h2>
-			<p>Project infrastructure is set up and running.</p>
+		<div class="bg-gray-100 rounded-xl p-6 mb-8">
+			<h2 class="mb-4 text-2xl text-indigo-400">Phase 1: Chunk 1 Complete! 🎉</h2>
+			<p class="mb-4 text-gray-500">Project infrastructure is set up and running.</p>
 
-			<div class="version-info">
-				<div class="version-item">
-					<span class="label">App Version:</span>
-					<span class="value">{appVersion}</span>
+			<div class="flex flex-col gap-2">
+				<div class="flex justify-between p-2 bg-white rounded-md">
+					<span class="font-semibold text-gray-600">App Version:</span>
+					<span class="font-mono text-indigo-400">{appVersion}</span>
 				</div>
-				<div class="version-item">
-					<span class="label">Tauri Version:</span>
-					<span class="value">{tauriVersion}</span>
+				<div class="flex justify-between p-2 bg-white rounded-md">
+					<span class="font-semibold text-gray-600">Tauri Version:</span>
+					<span class="font-mono text-indigo-400">{tauriVersion}</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="next-steps">
-			<h3>Next Steps:</h3>
-			<ul>
-				<li>
-					<strong>Chunk 0:</strong> Database schema & encryption foundation
+		<div class="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 mb-8">
+			<h3 class="mb-4 text-orange-400">Next Steps:</h3>
+			<ul class="m-0 pl-6">
+				<li class="mb-2 text-gray-500">
+					<strong class="text-orange-300">Chunk 0:</strong> Database schema & encryption foundation
 				</li>
-				<li><strong>Chunk 2:</strong> Rich text editor (Tiptap)</li>
-				<li><strong>Chunk 3:</strong> Document management backend</li>
+				<li class="mb-2 text-gray-500">
+					<strong class="text-orange-300">Chunk 2:</strong> Rich text editor (Tiptap)
+				</li>
+				<li class="mb-2 text-gray-500">
+					<strong class="text-orange-300">Chunk 3:</strong> Document management backend
+				</li>
 			</ul>
 		</div>
 
-		<footer>
-			<p>Local-first • Privacy-respecting • AI-powered</p>
+		<footer class="text-center pt-8 border-t border-gray-200">
+			<p class="m-0 text-gray-400 text-sm">Local-first • Privacy-respecting • AI-powered</p>
 		</footer>
 	</div>
 </main>
 
-<style lang="postcss">
-	@reference "tailwindcss";
-
-	.editor-demo-button {
-		@apply bg-blue-400 px-6 py-3 text-white border-2 border-blue-500 rounded-md text-base cursor-pointer transition-all duration-300 ease-in-out;
-	}
-
-	.editor-demo-button:hover {
-		@apply bg-indigo-400 border-violet-500;
-	}
-
+<style>
 	:global(body) {
-		@apply m-0 p-0 font-sans text-gray-700 bg-linear-135 from-indigo-400 to-violet-500;
-	}
-
-	main {
-		@apply flex justify-center items-center min-h-screen p-8;
-	}
-
-	.container {
-		@apply bg-white rounded-2xl p-12 max-w-150 shadow-2xl;
-	}
-
-	h1 {
-		@apply text-5xl mb-2 bg-linear-135 from-indigo-400 to-violet-500 bg-clip-text text-transparent;
-	}
-
-	.subtitle {
-		@apply text-xl text-gray-500 mb-8;
-	}
-
-	.info-card {
-		@apply bg-gray-100 rounded-xl p-6 mb-8;
-	}
-
-	.info-card h2 {
-		@apply mb-4 text-2xl text-indigo-400;
-	}
-
-	.info-card p {
-		@apply mb-4 text-gray-500;
-	}
-
-	.version-info {
-		@apply flex flex-col gap-2;
-	}
-
-	.version-item {
-		@apply flex justify-between p-2 bg-white rounded-md;
-	}
-
-	.label {
-		@apply font-semibold text-gray-600;
-	}
-
-	.value {
-		@apply font-mono text-indigo-400;
-	}
-
-	.next-steps {
-		@apply bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 mb-8;
-	}
-
-	.next-steps h3 {
-		@apply mb-4 text-orange-400;
-	}
-
-	.next-steps ul {
-		@apply m-0 pl-6;
-	}
-
-	.next-steps li {
-		@apply mb-2 text-gray-500;
-	}
-
-	.next-steps strong {
-		@apply text-orange-300;
-	}
-
-	footer {
-		@apply text-center pt-8 border-t border-gray-200;
-	}
-
-	footer p {
-		@apply m-0 text-gray-400 text-sm;
+		margin: 0;
+		padding: 0;
+		font-family:
+			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serig;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: #333;
 	}
 </style>
