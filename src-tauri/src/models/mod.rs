@@ -191,7 +191,7 @@ pub struct DocumentMetadata {
 // DOCUMENT VERSION MODEL
 // ============================================================================
 
-#[derive(Debug, Clone, FromRow)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct DocumentVersion {
     pub id: i64,
     pub document_id: i64,
