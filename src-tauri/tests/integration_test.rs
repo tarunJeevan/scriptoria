@@ -3,7 +3,7 @@
 
 use scriptoria_lib::db::documents::DocumentRepository;
 use scriptoria_lib::encryption::{EncryptionService, KeyManager, PasswordValidator};
-use scriptoria_lib::models::{CreateDocumentParams, DocumentMetadata, UpdateDocumentParams};
+use scriptoria_lib::models::{CreateDocumentParams, UpdateDocumentParams};
 
 use serial_test::serial;
 use sqlx::SqlitePool;

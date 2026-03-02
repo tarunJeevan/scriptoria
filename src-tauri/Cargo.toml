@@ -15,7 +15,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 name = "scriptoria_lib"
 
 [dependencies]
-anyhow = "1.0.100"
+anyhow = "1.0.102"
 argon2 = "0.5.3"
 blake3 = "1.8.3"
 # Encryption
@@ -25,7 +25,7 @@ dotenvy = "0.15.7"
 hex = "0.4.3"
 # Keyring
 keyring = "3.6.3"
-rand_core = { version = "0.9.3", features = ["os_rng"] }
+rand = { version = "0.10.0", features = ["sys_rng"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 # Database & SQLite
@@ -36,22 +36,22 @@ sqlx = { version = "0.8.6", features = [
 	"runtime-tokio-native-tls",
 	"sqlite",
 ] }
-tauri = { version = "2.9.5", features = [] }
+tauri = { version = "2.10.2", features = ["test"] }
 tauri-plugin-opener = "2.5.3"
 # Error handling
-thiserror = "2.0.17"
+thiserror = "2.0.18"
 # Time handling
-time = { version = "0.3.44", features = ["macros", "serde"] }
+time = { version = "0.3.47", features = ["macros", "serde"] }
 # Async runtime
 tokio = { version = "1.49.0", features = ["full"] }
 # Logging
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
-uuid = { version = "1.19.0", features = ["serde", "v4"] }
+uuid = { version = "1.21.0", features = ["serde", "v4"] }
 zeroize = "1.8.2"
 
 [dev-dependencies]
-serial_test = "3.3.1"
+serial_test = "3.4.0"
 
 [build-dependencies]
-tauri-build = { version = "2.5.3", features = [] }
+tauri-build = { version = "2.5.5", features = [] }
