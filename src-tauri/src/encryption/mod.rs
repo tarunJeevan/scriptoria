@@ -23,15 +23,18 @@
 // See: scriptoria-phase-1-encryption-service.rs and security_architecture.md
 
 use argon2::{
-    password_hash::{PasswordHasher, SaltString},
-    Argon2, Params, PasswordHash, PasswordVerifier, Version,
+    // password_hash::{PasswordHasher, SaltString},
+    Argon2,
+    Params,
+    Version,
+    // PasswordHash, PasswordVerifier,
 };
 use chacha20poly1305::{
     aead::{Aead, KeyInit},
     ChaCha20Poly1305, Nonce,
 };
 // use rand::{rngs::OsRng, RngCore};
-use rand_core::{OsRng, TryRngCore};
+use rand::{rngs::SysRng, TryRng};
 use zeroize::Zeroize;
 
 use crate::models::EncryptedContent;
@@ -89,7 +92,7 @@ impl EncryptionService {
     /// Generate a cryptographically secure random salt
     pub fn generate_salt() -> Result<Vec<u8>, EncryptionError> {
         let mut salt = vec![0u8; 32];
-        OsRng
+        SysRng
             .try_fill_bytes(&mut salt)
             .map_err(|e| EncryptionError::Randomness(format!("RNG failed: {}", e)))?;
         Ok(salt)
@@ -101,7 +104,7 @@ impl EncryptionService {
 
         // Generate random nonce (96 bits for ChaCha20)
         let mut nonce_bytes = [0u8; 12];
-        OsRng
+        SysRng
             .try_fill_bytes(&mut nonce_bytes)
             .map_err(|e| EncryptionError::Randomness(e.to_string()))?;
         let nonce = Nonce::from_slice(&nonce_bytes);
@@ -152,7 +155,7 @@ impl EncryptionService {
         let cipher = ChaCha20Poly1305::new(&self.master_key.into());
 
         let mut nonce_bytes = [0u8; 12];
-        OsRng
+        SysRng
             .try_fill_bytes(&mut nonce_bytes)
             .map_err(|e| EncryptionError::Randomness(e.to_string()))?;
         let nonce = Nonce::from_slice(&nonce_bytes);
