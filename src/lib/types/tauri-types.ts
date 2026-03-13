@@ -83,7 +83,7 @@ export const documentCommands = {
 	// Create a new document
 	async create(params: CreateDocumentParams): Promise<DecryptedDocument> {
 		return await invoke('create_document', {
-			project_id: params.project_id,
+			projectId: params.project_id,
 			title: params.title,
 			content: params.content,
 			docType: params.doc_type,
