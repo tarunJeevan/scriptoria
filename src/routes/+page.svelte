@@ -30,17 +30,23 @@
 		</h1>
 		<p class="text-xl text-gray-500 mb-8">AI-Enhanced Creative Writing Studio</p>
 
-		<!-- NOTE: Button to go to Editor Demo -->
+		<!-- Navigation buttons -->
 		<button
 			class="bg-blue-400 px-6 py-3 text-white border-2 border-blue-500 rounded-md text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-indigo-400 hover:border-violet-500"
+			onclick={() => goto(resolve('/documents', {}))}
+		>
+			Open Documents
+		</button>
+		<button
+			class="bg-blue-200 px-6 py-3 text-gray-600 border-2 border-gray-300 rounded-md text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-300 hover:border-gray-400"
 			onclick={() => goto(resolve('/editor-demo', {}))}
 		>
-			Go to Editor Demo
+			Editor Demo
 		</button>
 
 		<div class="bg-gray-100 rounded-xl p-6 mb-8">
-			<h2 class="mb-4 text-2xl text-indigo-400">Phase 1: Chunk 1 Complete! 🎉</h2>
-			<p class="mb-4 text-gray-500">Project infrastructure is set up and running.</p>
+			<h2 class="mb-4 text-2xl text-indigo-400">Phase 1: Chunks 0-4 Complete! 🎉</h2>
+			<p class="mb-4 text-gray-500">Core document loop is working end-to-end.</p>
 
 			<div class="flex flex-col gap-2">
 				<div class="flex justify-between p-2 bg-white rounded-md">
@@ -58,13 +64,13 @@
 			<h3 class="mb-4 text-orange-400">Next Steps:</h3>
 			<ul class="m-0 pl-6">
 				<li class="mb-2 text-gray-500">
-					<strong class="text-orange-300">Chunk 0:</strong> Database schema & encryption foundation
+					<strong class="text-orange-300">Chunk 5:</strong> AI inference backend (Ollama)
 				</li>
 				<li class="mb-2 text-gray-500">
-					<strong class="text-orange-300">Chunk 2:</strong> Rich text editor (Tiptap)
+					<strong class="text-orange-300">Chunk 6:</strong> AI context management (RAG)
 				</li>
 				<li class="mb-2 text-gray-500">
-					<strong class="text-orange-300">Chunk 3:</strong> Document management backend
+					<strong class="text-orange-300">Chunk 7:</strong> AI assistant chat UI
 				</li>
 			</ul>
 		</div>

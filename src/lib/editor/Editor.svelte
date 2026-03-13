@@ -13,9 +13,9 @@
 	interface EditorProps {
 		content: string;
 		editable: boolean;
-		placeholder: string;
-		onUpdate: ((content: string) => void) | undefined;
-		autofocus: boolean;
+		placeholder?: string;
+		onUpdate?: ((content: string) => void) | undefined;
+		autofocus?: boolean;
 	}
 
 	// Props
@@ -58,7 +58,8 @@
 					},
 					dropcursor: {
 						color: 'red'
-					}
+					},
+					link: false
 				}),
 				Link.configure({
 					openOnClick: false,
@@ -78,11 +79,11 @@
 			editable,
 			autofocus,
 			onUpdate: ({ editor }) => {
-				const html = editor.getHTML();
-				editorStore.setContent(html);
+				const json = JSON.stringify(editor.getJSON());
+				editorStore.setContent(json);
 
 				if (onUpdate) {
-					onUpdate(html);
+					onUpdate(json);
 				}
 			},
 			onSelectionUpdate: ({ editor }) => {
@@ -109,11 +110,15 @@
 
 	// Export methods for parent components
 	export function getContent(): string {
-		return editor?.getHTML() || '';
+		return editor ? JSON.stringify(editor.getJSON()) : '';
 	}
 
 	export function setContent(newContent: string) {
-		editor?.commands.setContent(newContent);
+		editor?.commands.setContent(JSON.parse(newContent));
+	}
+
+	export function setContentSilent(newContent: string) {
+		editor?.commands.setContent(JSON.parse(newContent), { emitUpdate: false });
 	}
 
 	export function focus() {
