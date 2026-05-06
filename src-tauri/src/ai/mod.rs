@@ -12,3 +12,4 @@ pub mod context; // Context management (Chunk 6)
 pub mod embeddings; // Vector embeddings (Chunk 6)
 pub mod inference; // Core inference logic
 pub mod ollama; // Ollama client wrapper
+pub mod types; // Required types

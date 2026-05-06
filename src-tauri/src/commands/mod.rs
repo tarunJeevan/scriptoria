@@ -12,6 +12,6 @@
 pub mod documents;
 
 // NOTE: Future command modules (Chunks 5-8)
-// pub mod ai;
+pub mod ai;
 // pub mod projects;
 // pub mod settings;

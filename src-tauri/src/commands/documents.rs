@@ -1,57 +1,17 @@
 // src-tauri/src/commands/documents.rs
 
 use crate::db::documents::DocumentRepository;
-use crate::encryption::EncryptionService;
+// use crate::encryption::EncryptionService;
+use crate::error::{AppError, CommandResult};
 use crate::models::{
     CreateDocumentParams, DecryptedDocument, DocumentListItem, DocumentMetadata, DocumentVersion,
     UpdateDocumentParams,
 };
+use crate::state::AppState;
 
-use sqlx::SqlitePool;
+// use sqlx::SqlitePool;
 
 use tauri::State;
-
-// =========================================================================
-// ERROR TYPES
-// =========================================================================
-
-#[derive(Debug, thiserror::Error)]
-pub enum CommandError {
-    #[error("Database error: {0}")]
-    Database(#[from] sqlx::Error),
-
-    #[error("Model error: {0}")]
-    Model(#[from] crate::models::ModelError),
-
-    #[error("Encryption error: {0}")]
-    Encryption(String),
-
-    #[error("Validation error: {0}")]
-    Validation(String),
-
-    #[error("Not found: {0}")]
-    NotFound(String),
-}
-
-impl serde::Serialize for CommandError {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(&self.to_string())
-    }
-}
-
-type CommandResult<T> = Result<T, CommandError>;
-
-// =========================================================================
-// APP STATE (Managed by Tauri)
-// =========================================================================
-
-pub struct AppState {
-    pub pool: SqlitePool,
-    pub encryption: EncryptionService,
-}
 
 // =========================================================================
 // TAURI COMMANDS
@@ -70,13 +30,11 @@ pub async fn create_document(
 ) -> CommandResult<DecryptedDocument> {
     // Validation
     if title.trim().is_empty() {
-        return Err(CommandError::Validation(
-            "Title cannot be empty".to_string(),
-        ));
+        return Err(AppError::Validation("Title cannot be empty".to_string()));
     }
 
     if title.len() > 500 {
-        return Err(CommandError::Validation(
+        return Err(AppError::Validation(
             "Title too long (max 500 characters".to_string(),
         ));
     }
@@ -127,12 +85,10 @@ pub async fn update_document(
     // Validation
     if let Some(ref t) = title {
         if t.trim().is_empty() {
-            return Err(CommandError::Validation(
-                "Title cannot be empty".to_string(),
-            ));
+            return Err(AppError::Validation("Title cannot be empty".to_string()));
         }
         if t.len() > 500 {
-            return Err(CommandError::Validation(
+            return Err(AppError::Validation(
                 "Title too long (max 500 characters".to_string(),
             ));
         }
@@ -291,7 +247,7 @@ pub async fn permanently_delete_document(
         .await?;
 
     if result.rows_affected() == 0 {
-        return Err(CommandError::NotFound(format!(
+        return Err(AppError::NotFound(format!(
             "Document {} not found",
             document_id
         )));

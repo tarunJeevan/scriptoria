@@ -1,13 +1,15 @@
-pub mod ai; // TODO [Chunk 5]: AI inference
-pub mod commands; // TODO [Chunk 3]: Tauri commands
+pub mod ai;
+pub mod commands;
 pub mod db;
 pub mod encryption;
+pub mod error;
 pub mod models;
+pub mod state;
 
 pub use models::*;
 
-use commands::documents::AppState;
 use encryption::{EncryptionService, KeyManager};
+use state::AppState;
 
 use tauri::Manager;
 
@@ -74,8 +76,11 @@ pub fn run() {
                 }
             };
 
+            // NOTE: Create a proper config path
+            let config_dir = std::path::PathBuf::new();
+
             // Store pool in app state
-            app.manage(AppState { pool, encryption });
+            app.manage(AppState::new(pool, encryption, config_dir));
 
             Ok(())
         })
@@ -96,6 +101,15 @@ pub fn run() {
             commands::documents::restore_from_version,
             // Utilities
             commands::documents::permanently_delete_document,
+            // Inference
+            commands::ai::list_models,
+            commands::ai::download_model,
+            commands::ai::check_ollama_status,
+            commands::ai::generate_text,
+            commands::ai::stream_text,
+            commands::ai::cancel_inference,
+            commands::ai::get_ai_preferences,
+            commands::ai::set_ai_preferences,
         ])
         .run(tauri::generate_context!())
         .expect("Error while running tauri application");
